@@ -3,12 +3,16 @@
 #include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
-
+#include <sys/types.h>
+#include <errno.h>
 
 size_t ft_strlen(const char *s);
 int ft_strcmp(const char *s1, const char *s2);
 char *ft_strcpy(char *dest, const char *src);
 char *ft_strdup(const char *s);
+ssize_t ft_write(int fildes, const void *buf, size_t nbyte);
+ssize_t ft_read(int fildes, void *buf, size_t nbyte);
+
 
 int main(void) {
 
@@ -50,24 +54,38 @@ int main(void) {
     // free(src);
     // free(dest);
 
-    char *test = ft_strdup("abc");
-    char *real = strdup("abc");
+    // char *test = ft_strdup("abc");
+    // char *real = strdup("abc");
 
-    if (test && real)
-    {
-        printf("ft_strdup = %s\n", test);
-        printf("strdup    = %s\n", real);
+    // if (test && real)
+    // {
+    //     printf("ft_strdup = %s\n", test);
+    //     printf("strdup    = %s\n", real);
 
-        if (ft_strcmp(test, real))
-            printf("ERROR: diff in strdup\n");
+    //     if (ft_strcmp(test, real))
+    //         printf("ERROR: diff in strdup\n");
 
-        free(test);
-        free(real);
-    }
+    //     free(test);
+    //     free(real);
+    // }
+    // else
+    // {
+    //     printf("!str\n");
+    // }
+
+    // ssize_t ret = ft_write(-1, "hello\n", 6);
+    // printf("Returned value : %zd\n", ret);
+    // if (ret == -1)
+    //     perror("ft_write");
+
+    char *buf = malloc(sizeof(char) * 100);
+    bzero(buf, 100);
+
+    ssize_t ret = ft_read(0, buf, 10);
+    if (ret == -1)
+        perror("ft_read");
     else
-    {
-        printf("!str\n");
-    }
+        printf("BUF = %s\n", buf);
 
     return 0;
 }
