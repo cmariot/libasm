@@ -38,4 +38,5 @@ int test_strdup(void)
         free(ft_ret);
         free(ret);
     }
+
 }

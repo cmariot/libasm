@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <unistd.h>
-
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int test_write(void)
 {
@@ -112,6 +113,46 @@ int test_write(void)
 
         printf("Returned value : ft:%zd vs real:%zd\n", ft_ret, ret);
         assert(ft_ret == ret);
+    }
+
+    // write in a file
+    {
+        int fd = open("./ft_write.txt", O_CREAT | O_TRUNC | O_RDWR, 0644);
+        if (fd == -1)
+        {
+            printf("Can't create the ft_write.txt file\n");
+            return (1);
+        }
+        char buf[11]= "4242424242\0";
+        ssize_t nb_write = ft_write(fd, buf, 11);
+        lseek(fd, 0, SEEK_SET);
+        char read_buf[100];
+        bzero(&read_buf, 100);
+        ssize_t ret = read(fd, read_buf, nb_write);
+        if (strcmp(buf, read_buf) != 0)
+        {
+            printf("FT : Buf and read_buf are differents, KO\n");
+            printf("%s vs %s\n", buf, read_buf);
+        }
+        close(fd);
+
+        fd = open("./real_write.txt", O_CREAT | O_TRUNC | O_RDWR, 0644);
+        if (fd == -1)
+        {
+            printf("Can't create the ft_write.txt file\n");
+            return (1);
+        }
+        nb_write = write(fd, buf, 11);
+        lseek(fd, 0, SEEK_SET);
+        char real_read_buf[100];
+        bzero(&real_read_buf, 100);
+        ret = read(fd, real_read_buf, nb_write);
+        if (strcmp(buf, real_read_buf) != 0)
+        {
+            printf("REAL : Buf and read_buf are differents, KO\n");
+            printf("%s vs %s\n", buf, real_read_buf);
+        }
+        close(fd);
     }
 
 }

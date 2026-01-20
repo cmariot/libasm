@@ -32,7 +32,7 @@ int test_strcmp(void)
     }
 
     const char *diff_sources[] = {
-        " ",
+        "v",
         "adsdf",
         "abfsdfc",
         "",

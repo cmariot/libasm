@@ -47,4 +47,43 @@ int test_read(void)
     printf("Returned value : ft:%zd vs real:%zd\n", ft_ret, ret);
     assert(ft_ret == ret);
 
+    // bad fd
+    {
+        int ret = read(-1, buf, 100);
+        int ft_ret = ft_read(-1, ft_buf, 100);
+
+        if (ret == -1 && ft_ret == -1){
+            perror("ft_read");
+            printf("OK\n");
+        }
+        else {
+            printf("KO, bad fd error");
+        }
+    }
+
+    // read size of 0
+    {
+        int ret = read(0, buf, 0);
+        int ft_ret = ft_read(0, ft_buf, 0);
+
+        if (ret != 0 || ft_ret != 0)
+            printf("Should return 0\n");
+    }
+
+    // bad address
+    {
+        lseek(fd, 0, SEEK_SET);
+
+        int ret = read(fd, NULL + 1, 10);
+        int ft_ret = ft_read(fd, NULL + 1, 10);
+
+        if (ret == -1 && ft_ret == -1){
+            perror("ft_read");
+            printf("OK\n");
+        }
+        else {
+            printf("KO, bad address error");
+        }
+
+    }
 }

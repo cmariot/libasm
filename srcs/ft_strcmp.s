@@ -25,6 +25,7 @@ ft_strcmp:
     .end_of_strings:
         xor     rax, rax                ; return 0
         ret
+
     .done:
         movzx   eax, r8b                ; cast c1 in unsigned char in eax
         movzx   edx, r9b                ; cast c2 in unsigned char in edx

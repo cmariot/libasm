@@ -3,6 +3,7 @@ global ft_strdup
 extern ft_strlen
 extern malloc
 extern ft_strcpy
+extern __errno_location
 
 default rel
 
@@ -12,11 +13,7 @@ ft_strdup:
 
     ; rdi : adresse de s
 
-    ; Check if s is NULL -> return NULL
-    cmp     rdi, 0
-    je      .error_null
-
-    ; rdi can be used during the exter call, we need to save it on the stack for later use
+    ; rdi can be used during the extern call, we need to save it on the stack for later use
     push    rdi
 
     ; Compute the len of s (ft_strlen)
@@ -42,13 +39,12 @@ ft_strdup:
 
     jmp .done
 
-    .error_null:
-        mov rax, 0
-        ret
-
     .error_malloc:
+        ; malloc a echoue -> retourner NULL et mettre errno = ENOMEM
+        call    __errno_location wrt ..plt      ; int *__errno_location(void);
+        mov     dword [rax], 12                 ; ENOMEM
         pop     rdi
-        mov rax, 0
+        xor     rax, rax                        ; return NULL
         ret
 
     .done:

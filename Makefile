@@ -16,16 +16,15 @@ SRCS_DIR        := srcs
 OBJS_DIR        := objs
 
 SRCS            := \
-    $(SRCS_DIR)/ft_strlen.s \
-    $(SRCS_DIR)/ft_strcpy.s \
-    $(SRCS_DIR)/ft_strcmp.s \
-    $(SRCS_DIR)/ft_write.s  \
-    $(SRCS_DIR)/ft_read.s   \
-    $(SRCS_DIR)/ft_strdup.s
+					$(SRCS_DIR)/ft_strlen.s \
+					$(SRCS_DIR)/ft_strcpy.s \
+					$(SRCS_DIR)/ft_strcmp.s \
+					$(SRCS_DIR)/ft_write.s  \
+					$(SRCS_DIR)/ft_read.s   \
+					$(SRCS_DIR)/ft_strdup.s
 
 OBJS            := $(SRCS:$(SRCS_DIR)/%.s=$(OBJS_DIR)/%.o)
 
-.PHONY: all bonus clean fclean re
 
 all: $(NAME)
 
@@ -43,13 +42,15 @@ $(OBJS_DIR):
 
 clean:
 	$(RM) $(OBJS)
-	$(RM) -r $(OBJS_DIR)
+	$(RM) -r $(OBJS_DIR) ft_write.txt real_write.txt tmp.txt
 
 fclean: clean
-	$(RM) $(NAME) test ./tmp.txt
+	$(RM) $(NAME) test
 
 re: fclean all
 
 test: all
 	gcc tests/main.c tests/ft_strlen.c tests/ft_strcpy.c tests/ft_strcmp.c tests/ft_strdup.c tests/ft_write.c tests/ft_read.c -L . -lasm -I . -o test
 	./test
+
+.PHONY: 		all bonus clean fclean re
