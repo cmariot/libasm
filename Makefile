@@ -25,12 +25,13 @@ SRCS            := \
 
 OBJS            := $(SRCS:$(SRCS_DIR)/%.s=$(OBJS_DIR)/%.o)
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
 
 all: $(NAME)
 
 # Construit la lib uniquement si un .o a changé
 $(NAME): $(OBJS)
+	$(RM) $@
 	$(AR) $(ARFLAGS) $@ $^
 
 # Compile uniquement le .s concerné en .o
@@ -45,6 +46,10 @@ clean:
 	$(RM) -r $(OBJS_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) test ./tmp.txt
 
 re: fclean all
+
+test: all
+	gcc tests/main.c tests/ft_strlen.c tests/ft_strcpy.c tests/ft_strcmp.c tests/ft_strdup.c tests/ft_write.c tests/ft_read.c -L . -lasm -I . -o test
+	./test
