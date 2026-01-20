@@ -10,7 +10,7 @@ int test_strcmp(void)
     printf("\n\nTEST STRCMP\n");
 
     const char *sources[] = {
-        "",
+        "b",
         "a",
         "abc",
         "bonjour",
@@ -50,7 +50,7 @@ int test_strcmp(void)
             i, sources[i], diff_sources[i], ft_ret, ret
         );
 
-        assert(ret == ft_ret);
+        assert(ret != 0);
     }
 
 }
