@@ -26,31 +26,35 @@ SRCS            := \
 OBJS            := $(SRCS:$(SRCS_DIR)/%.s=$(OBJS_DIR)/%.o)
 
 
-all: $(NAME)
+# ******************* #
+# RULES
+# ******************* #
+
+all: 			$(NAME)
 
 # Construit la lib uniquement si un .o a changé
-$(NAME): $(OBJS)
-	$(RM) $@
-	$(AR) $(ARFLAGS) $@ $^
+$(NAME): 		$(OBJS)
+				$(RM) $@
+				$(AR) $(ARFLAGS) $@ $^
 
 # Compile uniquement le .s concerné en .o
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.s | $(OBJS_DIR)
-	$(NASM) $(NASMFLAGS) -o $@ $<
+				$(NASM) $(NASMFLAGS) -o $@ $<
 
 $(OBJS_DIR):
-	mkdir -p $(OBJS_DIR)
+				mkdir -p $(OBJS_DIR)
 
 clean:
-	$(RM) $(OBJS)
-	$(RM) -r $(OBJS_DIR) ft_write.txt real_write.txt tmp.txt
+				$(RM) $(OBJS)
+				$(RM) -r $(OBJS_DIR) ft_write.txt real_write.txt tmp.txt
 
-fclean: clean
-	$(RM) $(NAME) test
+fclean: 		clean
+				$(RM) $(NAME) test
 
-re: fclean all
+re: 			fclean all
 
-test: all
-	gcc tests/main.c tests/ft_strlen.c tests/ft_strcpy.c tests/ft_strcmp.c tests/ft_strdup.c tests/ft_write.c tests/ft_read.c -L . -lasm -I . -o test
-	./test
+test: 			all
+				gcc tests/main.c tests/ft_strlen.c tests/ft_strcpy.c tests/ft_strcmp.c tests/ft_strdup.c tests/ft_write.c tests/ft_read.c -L . -lasm -I . -o test
+				./test
 
 .PHONY: 		all bonus clean fclean re
